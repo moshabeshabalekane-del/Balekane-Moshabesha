@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101a17">
+  <title>Counter — Shop &amp; Bar POS</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Main navigation">
+      <a class="brand" href="#pos" aria-label="Counter home"><span class="brand-mark">C</span><span>counter<span class="brand-dot">.</span><small>SHOP &amp; BAR POS</small></span></a>
+      <div class="location"><span class="location-icon">⌖</span><span><b>My business</b><small>Front counter</small></span><span class="online-dot" title="Local mode"></span></div>
+      <nav class="nav-links">
+        <button class="nav-link active" data-view="pos"><span>▦</span> Point of sale</button>
+        <button class="nav-link" data-view="orders"><span>◷</span> Orders <span class="nav-count" id="order-count">0</span></button>
+        <button class="nav-link" data-view="inventory"><span>▤</span> Products</button>
+      </nav>
+      <div class="sidebar-bottom"><div class="secure-note"><span>◆</span><div><b>Secure checkout</b><small>Card data is never stored here.</small></div></div><div class="user-profile"><div class="avatar">BM</div><span><b>Business owner</b><small>Administrator</small></span><span class="more">···</span></div></div>
+    </aside>
+
+    <main class="main-area">
+      <header class="topbar"><div><div class="eyebrow" id="today-label">TODAY</div><h1 id="page-title">Point of sale</h1></div><div class="top-actions"><span class="local-badge"><i></i> Saved on this device</span><button class="icon-button" id="help-button" aria-label="About this demo">?</button></div></header>
+      <section class="view active" id="pos-view">
+        <div class="pos-layout">
+          <div class="catalog-panel">
+            <div class="catalog-heading"><div><h2>Make a sale</h2><p>Choose products to add them to the order.</p></div><button class="button button-light" data-open-product>＋ <span>Add product</span></button></div>
+            <label class="search-box"><span>⌕</span><input id="search-input" type="search" placeholder="Search products…" autocomplete="off"><kbd>/</kbd></label>
+            <div class="category-row" id="categories" aria-label="Product categories"></div>
+            <div class="product-grid" id="product-grid"></div>
+          </div>
+          <aside class="cart-panel">
+            <div class="cart-header"><div><h2>Current order</h2><p><span id="cart-item-count">0</span> items</p></div><button class="text-button" id="clear-cart">Clear</button></div>
+            <div class="cart-items" id="cart-items"><div class="empty-cart"><div class="empty-icon">＋</div><b>Nothing here yet</b><span>Tap a product to get started.</span></div></div>
+            <div class="cart-footer"><div class="subtotal-line"><span>Subtotal</span><b id="subtotal">$0.00</b></div><div class="total-line"><span>Total</span><strong id="total">$0.00</strong></div><button class="button button-primary checkout-button" id="checkout-button" disabled>Continue to payment <span>→</span></button><p class="tax-note">Taxes and service charges are not configured.</p></div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="view" id="orders-view"><div class="section-heading"><div><h2>Orders</h2><p>Sales saved on this device.</p></div><button class="button button-light" id="export-orders">↓ <span>Export CSV</span></button></div><div class="orders-card"><div class="orders-table-wrap"><table><thead><tr><th>ORDER</th><th>DATE</th><th>ITEMS</th><th>PAYMENT</th><th>STATUS</th><th class="align-right">TOTAL</th></tr></thead><tbody id="orders-body"></tbody></table></div><div class="empty-orders" id="empty-orders"><div class="empty-icon">◷</div><b>No orders yet</b><span>Your completed and pending orders will show here.</span></div></div></section>
+
+      <section class="view" id="inventory-view"><div class="section-heading"><div><h2>Products</h2><p>Manage items available at your counter.</p></div><button class="button button-primary" data-open-product>＋ <span>Add product</span></button></div><div class="inventory-card"><div class="inventory-table-wrap"><table><thead><tr><th>PRODUCT</th><th>CATEGORY</th><th>PRICE</th><th>IN STOCK</th><th></th></tr></thead><tbody id="inventory-body"></tbody></table></div><div class="empty-orders" id="empty-inventory" hidden><b>No products yet</b><span>Add a product to get started.</span></div></div></section>
+    </main>
+  </div>
+
+  <dialog id="checkout-dialog" class="modal"><form id="checkout-form"><button type="button" class="modal-close" data-close aria-label="Close">×</button><div class="modal-kicker">CHECKOUT</div><h2>How would they like to pay?</h2><p class="modal-intro">Choose a method. Online payments need a provider account and server integration before they can collect real money.</p><div class="payment-options" id="payment-options">
+      <label class="payment-option"><input type="radio" name="payment" value="Cash" checked><span class="pay-icon cash-icon">$</span><span><b>Cash</b><small>Record a cash payment</small></span><i class="radio-dot"></i></label>
+      <label class="payment-option"><input type="radio" name="payment" value="EcoCash"><span class="pay-icon ecocash-icon">E</span><span><b>EcoCash</b><small>Mobile money · provider setup required</small></span><i class="radio-dot"></i></label>
+      <label class="payment-option"><input type="radio" name="payment" value="M-Pesa"><span class="pay-icon mpesa-icon">M</span><span><b>M-Pesa</b><small>Mobile money · provider setup required</small></span><i class="radio-dot"></i></label>
+      <label class="payment-option"><input type="radio" name="payment" value="C Pay"><span class="pay-icon cpay-icon">C</span><span><b>C Pay</b><small>Online payment · provider setup required</small></span><i class="radio-dot"></i></label>
+      <label class="payment-option"><input type="radio" name="payment" value="Khetsi"><span class="pay-icon khetsi-icon">K</span><span><b>Khetsi</b><small>Online payment · provider setup required</small></span><i class="radio-dot"></i></label>
+      <label class="payment-option"><input type="radio" name="payment" value="Bank card"><span class="pay-icon card-icon">▰</span><span><b>Bank card</b><small>Hosted card checkout required</small></span><i class="radio-dot"></i></label>
+    </div><label class="field-label" for="customer-name">Customer name <span>OPTIONAL</span></label><input class="text-input" id="customer-name" maxlength="80" placeholder="e.g. Tariro"><div class="checkout-total"><span>Amount due</span><b id="dialog-total">$0.00</b></div><p class="security-hint">Never enter or store a customer's card number in this app.</p><button class="button button-primary full-button" id="place-order" type="submit">Record cash sale <span>→</span></button></form></dialog>
+
+  <dialog id="product-dialog" class="modal compact-modal"><form id="product-form"><button type="button" class="modal-close" data-close aria-label="Close">×</button><div class="modal-kicker">CATALOG</div><h2>Add a product</h2><p class="modal-intro">Add an item to your shop or bar menu.</p><label class="field-label" for="product-name">Product name</label><input class="text-input" id="product-name" required maxlength="60" placeholder="e.g. Mineral water"><div class="field-row"><div><label class="field-label" for="product-category">Category</label><select class="text-input" id="product-category"><option>Drinks</option><option>Food</option><option>Groceries</option><option>Other</option></select></div><div><label class="field-label" for="product-price">Price (USD)</label><input class="text-input" id="product-price" type="number" required min="0.01" max="999999" step="0.01" placeholder="0.00"></div></div><div class="field-row"><div><label class="field-label" for="product-stock">Stock quantity</label><input class="text-input" id="product-stock" type="number" min="0" max="999999" step="1" value="20"></div><div></div></div><button class="button button-primary full-button" type="submit">Add product <span>→</span></button></form></dialog>
+
+  <dialog id="message-dialog" class="modal compact-modal"><form method="dialog"><button type="button" class="modal-close" data-close aria-label="Close">×</button><div class="success-mark" id="message-mark">✓</div><div class="modal-kicker" id="message-kicker">ORDER SAVED</div><h2 id="message-title">Sale recorded</h2><p class="modal-intro" id="message-body"></p><div class="message-order-total" id="message-total"></div><button class="button button-primary full-button" value="close">Done</button></form></dialog>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>
